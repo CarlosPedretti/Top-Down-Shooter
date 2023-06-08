@@ -36,6 +36,8 @@ public class Movement : MonoBehaviour
         Vector2 moveForce = PlayerInput * moveSpeed;
         rb.velocity = moveForce;
 
+
+
     }
 
     private void LookAtMouse()
