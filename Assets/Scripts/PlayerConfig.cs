@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+
+public class PlayerConfig : MonoBehaviour, IHealth
 {
     public Rigidbody2D rb;
     public float moveSpeed;
@@ -13,9 +14,14 @@ public class Movement : MonoBehaviour
     private Camera mainCam;
     private Vector3 mousePos;
 
+    public int maxHealth = 100;
+    public int currentHealth;
+    public int damage;
+
     void Start()
     {
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        currentHealth = maxHealth;
     }
 
     void Update()
@@ -26,8 +32,6 @@ public class Movement : MonoBehaviour
         PlayerInput = new Vector2(horizontalMov, verticalMov).normalized;
 
         LookAtMouse();
-
-
     }
 
 
@@ -36,9 +40,50 @@ public class Movement : MonoBehaviour
         Vector2 moveForce = PlayerInput * moveSpeed;
         rb.velocity = moveForce;
 
+    }
 
+    public int Damage
+    {
+        get { return damage; }
+        set { damage = value; }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
 
     }
+
+    void OnCollisionEnter2D(Collision2D colider)
+    {
+        if (colider.gameObject.tag == "Enemy")
+        {
+            
+        }
+    }
+
+
+    public void Heal(int health)
+    {
+
+        currentHealth += health;
+
+    }
+
+    private void Die()
+    {
+        //GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        //Destroy(explosion, 0.4f);
+        Destroy(gameObject);
+        GameManager.Instance.ShowGameOverScreen();
+    }
+
 
     private void LookAtMouse()
     {
