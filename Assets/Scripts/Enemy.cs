@@ -15,6 +15,8 @@ public class Enemy : MonoBehaviour, IHealth
     public int currentHealth;
     public int damage;
 
+    private PlayerConfig player;
+
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -59,12 +61,6 @@ public class Enemy : MonoBehaviour, IHealth
             {
                 player.TakeDamage(damage); 
             }
-        }
-        if (collision.gameObject.CompareTag("Bullet"))
-        {
-
-
-
         }
     }
 
