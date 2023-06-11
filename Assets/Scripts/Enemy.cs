@@ -7,31 +7,45 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour, IHealth
 {
 
-    [SerializeField] private Transform objective;
-
-    private NavMeshAgent navMeshAgent;
+    public Transform player;
+    public float moveSpeed = 5f;
+    private Rigidbody2D rb;
+    private Vector2 movement;
 
     public int maxHealth = 100;
     public int currentHealth;
     public int damage;
 
-    private PlayerConfig player;
+
+
+    private PlayerConfig playerConfig;
 
     void Start()
     {
-        navMeshAgent = GetComponent<NavMeshAgent>();
-        navMeshAgent.updateRotation = false;
-        navMeshAgent.updateUpAxis = false;
+        rb = this.GetComponent<Rigidbody2D>();
 
         currentHealth = maxHealth;
     }
 
-
-    void FixedUpdate()
+    void Update()
     {
-        navMeshAgent.SetDestination(objective.position);
+        Vector3 direction = player.position - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        rb.rotation = angle;
+        direction.Normalize();
+        movement = direction;
     }
 
+
+    private void FixedUpdate()
+    {
+        moveCharacter(movement);
+    }
+
+    void moveCharacter(Vector2 direction)
+    {
+        rb.MovePosition((Vector2)transform.position + (direction * moveSpeed * Time.deltaTime));
+    }
 
     public int Damage
     {
@@ -77,6 +91,7 @@ public class Enemy : MonoBehaviour, IHealth
     {
         Destroy(gameObject);
     }
+
 
 
 }

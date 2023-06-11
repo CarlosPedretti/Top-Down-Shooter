@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject GameOverScreen;
     [SerializeField] private GameObject WinScene;
-    [SerializeField] private TMP_Text LifeText;
+    [SerializeField] public Image timerBar;
 
     public float delayBeforeGameOver = 1f;
 
@@ -30,12 +31,52 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public float duration = 60f; 
+    private float elapsedTime;
+    private bool isTimerRunning;
+
+    private void Start()
+    {
+        StartTimer();
+    }
+
+    private void Update()
+    {
+        if (isTimerRunning)
+        {
+            elapsedTime += Time.deltaTime;
+
+            if (elapsedTime >= duration)
+            {
+                elapsedTime = duration;
+                isTimerRunning = false;
+                WinScreen();
+            }
+
+            float remainingTime = duration - elapsedTime;
+            UpdateTimerBar(remainingTime / duration);
+
+        }
+    }
+
+
+    private void UpdateTimerBar(float fillAmount)
+    {
+        timerBar.fillAmount = fillAmount;
+    }
+
+
+    private void StartTimer()
+    {
+        isTimerRunning = true;
+    }
+
     public void ShowGameOverScreen()
     {
         Invoke("ShowGameOver", delayBeforeGameOver);
     }
 
-    private void ShowGameOver()
+    public void ShowGameOver()
     {
         GameOverScreen.SetActive(true);
         Time.timeScale = 0f;

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 
 public class PlayerConfig : MonoBehaviour, IHealth
@@ -30,6 +32,7 @@ public class PlayerConfig : MonoBehaviour, IHealth
         horizontalMov = Input.GetAxisRaw("Horizontal");
         verticalMov = Input.GetAxisRaw("Vertical");
         PlayerInput = new Vector2(horizontalMov, verticalMov).normalized;
+
 
         LookAtMouse();
     }
@@ -78,10 +81,8 @@ public class PlayerConfig : MonoBehaviour, IHealth
 
     private void Die()
     {
-        //GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-        //Destroy(explosion, 0.4f);
-        Destroy(gameObject);
-        GameManager.Instance.ShowGameOverScreen();
+
+        GameManager.Instance.ShowGameOver();
     }
 
 

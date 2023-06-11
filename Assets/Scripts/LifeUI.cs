@@ -24,7 +24,5 @@ public class LifeUI : MonoBehaviour
 
         float RemainingHealth = (float)CurrentHealth / (float)MaxHealth;
         LifeBar.fillAmount = RemainingHealth;
-
-        //LifeBar.fillAmount = -playerMovement.currentHealth + playerMovement.maxHealth;
     }
 }

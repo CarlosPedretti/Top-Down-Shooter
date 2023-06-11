@@ -4,25 +4,27 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-
-    public Enemy enemy;
     public PlayerConfig playerConfig;
 
-
-    void Start()
+    private void Start()
     {
         playerConfig = FindObjectOfType<PlayerConfig>();
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            enemy.TakeDamage(playerConfig.damage);
-
+            Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(playerConfig.damage);
+            }
         }
 
         Destroy(gameObject);
     }
-
 }
+
+
+
